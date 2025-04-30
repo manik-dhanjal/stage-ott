@@ -9,7 +9,7 @@ import { TVShow, TVShowDocument } from './schema/tv-show.schema';
 export class TVShowRepository {
   constructor(
     @InjectModel(TVShow.name)
-    private readonly tvShowModel: Model<TVShow>,
+    private readonly tvShowModel: Model<TVShowDocument>,
   ) {}
 
   async create(tvShow: Partial<TVShow>): Promise<TVShowDocument> {
