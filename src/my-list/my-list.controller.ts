@@ -22,7 +22,7 @@ import { MyListItemPopulatedResponseDto } from './dto/my-list-item-populated-res
 export class MyListController {
   constructor(private readonly myListService: MyListService) {}
 
-  @Post('add')
+  @Post()
   @ApiOperation({
     summary: 'Add a movie or TV show to My List',
     description: "Adds a movie or TV show to the user's personalized list.",
@@ -39,7 +39,7 @@ export class MyListController {
     return MyListItemResponseDto.fromDocument(item);
   }
 
-  @Delete('remove/:itemId')
+  @Delete(':itemId')
   @ApiOperation({
     summary: 'Remove an item from My List',
     description:
@@ -61,7 +61,7 @@ export class MyListController {
     await this.myListService.removeFromList(userId, itemId);
   }
 
-  @Get('list')
+  @Get()
   @ApiOperation({
     summary: 'Get all items in My List',
     description:

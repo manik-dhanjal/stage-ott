@@ -62,6 +62,10 @@ export class MyListService {
   }
 
   async removeFromList(userId: string, itemId: string): Promise<void> {
+    if (!Types.ObjectId.isValid(itemId)) {
+      throw new BadRequestException('Invalid item ID');
+    }
+
     const userObjectId = new Types.ObjectId(userId);
     const itemObjectId = new Types.ObjectId(itemId);
 
