@@ -7,18 +7,19 @@ import {
   Body,
   Query,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { MyListService } from './my-list.service';
 import { ContentType } from 'src/shared/enum/content-type.enum';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { MyListItemResponseDto } from './dto/my-list-item-response.dto';
-import { MyListItemRequestDto } from './dto/my-list-item-request.dto';
+import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { MyListItemPopulatedResponseDto } from './dto/my-list-item-populated-response.dto';
 
 @ApiTags('My List')
-@Controller('my-list')
-// @UseGuards(JwtAuthGuard) // Assuming you're using JWT authentication
+@ApiBearerAuth()
+@Controller({path:'my-list',    version: '1'})
 export class MyListController {
   constructor(private readonly myListService: MyListService) {}
 
@@ -32,10 +33,12 @@ export class MyListController {
     description: 'Successfully added item to My List.',
     type: MyListItemResponseDto,
   })
+  @ApiBearerAuth()
   async addToList(
-    @Body() body: MyListItemRequestDto,
+    @Body() body: CreateMyListItemDto,
+    @Request() {user: { _id: userId } },
   ): Promise<MyListItemResponseDto> {
-    const item = await this.myListService.addToList('userId', body);
+    const item = await this.myListService.addToList(userId, body);
     return MyListItemResponseDto.fromDocument(item);
   }
 
@@ -56,7 +59,7 @@ export class MyListController {
   })
   async removeFromList(
     @Param('itemId') itemId: string,
-    @Body('userId') userId: string, // Typically, you can extract the userId from the JWT token
+    @Request() {user: { _id: userId } } 
   ): Promise<void> {
     await this.myListService.removeFromList(userId, itemId);
   }
@@ -72,8 +75,9 @@ export class MyListController {
     description: 'Successfully retrieved items from My List.',
     type: PaginationDto<MyListItemPopulatedResponseDto>,
   })
+  @ApiBearerAuth()
   async getMyList(
-    @Query('userId') userId: string, // Typically, you can extract the userId from the JWT token
+    @Request() {user: { _id: userId } },
     @Query('offset') offset = 1,
     @Query('limit') limit = 10,
   ): Promise<PaginationDto<MyListItemPopulatedResponseDto>> {

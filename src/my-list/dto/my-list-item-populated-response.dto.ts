@@ -1,17 +1,15 @@
 import { IsString, IsOptional, IsObject, IsEnum } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { MovieDto } from 'src/movie/dto/movie.dto';
 import { TVShowDto } from 'src/tv-show/dto/tv-show.dto';
 import { ContentType } from 'src/shared/enum/content-type.enum';
 import { MyListItemDocumentPopulated } from '../interface/my-list-item-document-populated.dto';
+import { MyListItemResponseDto } from './my-list-item-response.dto';
 
-export class MyListItemPopulatedResponseDto {
-  @ApiProperty({
-    description: 'Unique identifier for the list item.',
-    example: '66317de2e2b157cdce6f891a',
-  })
-  @IsString()
-  id: string;
+export class MyListItemPopulatedResponseDto extends OmitType(
+  MyListItemResponseDto,
+  [ 'contentId'],
+) {
 
   @ApiProperty({
     description:
@@ -22,14 +20,6 @@ export class MyListItemPopulatedResponseDto {
   @IsObject()
   content: MovieDto | TVShowDto;
 
-  @ApiProperty({
-    description: 'Type of content (e.g., Movie, TV Show).',
-    example: ContentType.MOVIE,
-    enum: ContentType,
-  })
-  @IsString()
-  @IsEnum(ContentType)
-  contentType: ContentType;
 
   /**
    * Converts a MyListItemDocument to a MyListItemPopulatedResponseDto.

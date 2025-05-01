@@ -54,4 +54,18 @@ export class MovieDto {
   @IsArray()
   @IsOptional()
   actors?: string[];
+
+  @ApiProperty({
+    description: 'The date when the movie record was created.',
+    example: '2025-01-01T12:00:00.000Z',
+  })
+  @IsDate()
+  createdAt: Date;
+
+  @ApiProperty({
+    description: 'The date when the movie record was last updated.',
+    example: '2025-01-15T12:00:00.000Z',
+  })
+  @IsDate()
+  updatedAt: Date;
 }

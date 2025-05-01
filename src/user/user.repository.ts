@@ -2,10 +2,8 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User, UserDocument } from './schema/user.schema';
-import { WatchHistory } from './schema/watch-history.schema';
-import { Preferences } from './schema/preferences.schema';
 
 @Injectable()
 export class UserRepository {
@@ -14,44 +12,27 @@ export class UserRepository {
     private readonly userModel: Model<UserDocument>,
   ) {}
 
-  async createUser(data: Partial<User>): Promise<UserDocument> {
+  async create(data: Partial<User>): Promise<UserDocument> {
     const createdUser = new this.userModel(data);
     return createdUser.save();
   }
 
-  async findById(userId: string): Promise<UserDocument | null> {
-    return this.userModel.findById(userId).exec();
+  async findOne(query: Partial<User & {_id: Types.ObjectId}>): Promise<UserDocument | null> {
+    return this.userModel.findOne(query).exec();
   }
 
-  async findByUsername(username: string): Promise<UserDocument | null> {
-    return this.userModel.findOne({ username }).exec();
+  async deleteOne(query: Partial<User & {_id: Types.ObjectId}>): Promise<boolean> {
+    const result = await this.userModel.deleteOne(query).exec();
+    return result.deletedCount > 0;
   }
 
-  async updatePreferences(
-    userId: string,
-    preferences: Preferences,
+
+  async updateByUserId(
+    userId: string | Types.ObjectId,
+    body: Partial<User>,
   ): Promise<UserDocument | null> {
     return this.userModel
-      .findByIdAndUpdate(userId, { preferences }, { new: true })
-      .exec();
-  }
-
-  async addToWatchHistory(
-    userId: string,
-    historyEntry: WatchHistory,
-  ): Promise<UserDocument | null> {
-    return this.userModel
-      .findByIdAndUpdate(
-        userId,
-        { $push: { watchHistory: historyEntry } },
-        { new: true },
-      )
-      .exec();
-  }
-
-  async clearWatchHistory(userId: string): Promise<UserDocument | null> {
-    return this.userModel
-      .findByIdAndUpdate(userId, { watchHistory: [] }, { new: true })
+      .findByIdAndUpdate(userId, body, { new: true })
       .exec();
   }
 }

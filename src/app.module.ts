@@ -13,6 +13,8 @@ import {
 import { userConfig } from './shared/config/user.config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '@shared/gaurd/auth.gaurd';
 
 @Module({
   imports: [
@@ -34,6 +36,11 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+    }
+  ],
 })
 export class AppModule {}

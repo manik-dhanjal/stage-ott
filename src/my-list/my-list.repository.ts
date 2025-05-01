@@ -42,6 +42,6 @@ export class MyListRepository {
       .limit(limit)
       .populate('movie')
       .populate('tvShow')
-      .lean() as Promise<MyListItemDocumentPopulated[]>;
+      .lean<MyListItemDocumentPopulated[]>();
   }
 }

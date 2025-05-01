@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsMongoId, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { ContentType } from 'src/shared/enum/content-type.enum';
 import { MyListItemDocument } from '../schema/my-list-item.schema';
+import { CreateMyListItemDto } from './create-my-list-item.dto';
 
-export class MyListItemResponseDto {
+export class MyListItemResponseDto extends CreateMyListItemDto{
   @ApiProperty({
     description: 'Unique identifier for the list item.',
     example: '66317de2e2b157cdce6f891a',
@@ -12,21 +13,18 @@ export class MyListItemResponseDto {
   id: string;
 
   @ApiProperty({
-    description: 'Type of content (e.g., Movie, TV Show).',
-    example: ContentType.MOVIE,
-    enum: ContentType,
+    description: 'The date when the list item was created.',
+    example: '2025-01-01T12:00:00.000Z',
   })
-  @IsString()
-  @IsEnum(ContentType)
-  contentType: ContentType;
+  @IsDate()
+  createdAt: Date;
 
   @ApiProperty({
-    description:
-      'Unique identifier for the content (either a movie or a TV show).',
-    example: '66317de2e2b157cdce6f891a',
+    description: 'The date when the list item was last updated.',
+    example: '2025-01-15T12:00:00.000Z',
   })
-  @IsMongoId({ message: 'contentId must be a valid MongoDB ObjectId' })
-  contentId: string;
+  @IsDate()
+  updatedAt: Date;
 
   /**
    * Converts a MyListItemDocument to a MyListItemResponseDto.

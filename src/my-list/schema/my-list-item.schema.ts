@@ -5,7 +5,7 @@ import { ContentType } from 'src/shared/enum/content-type.enum';
 import { TVShow } from 'src/tv-show/schema/tv-show.schema';
 import { User } from 'src/user/schema/user.schema';
 
-@Schema({ _id: false })
+@Schema({ _id: false, timestamps: true })
 export class MyListItem {
   @Prop({
     required: true,

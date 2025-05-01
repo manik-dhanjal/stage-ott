@@ -6,19 +6,26 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2023",
+    "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "isolatedModules": false,
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "paths": {
+      "@mocks/*": ["test/__mocks__/*"],
+      "@test/*": ["test/*"],
+      "@config/*": ["src/shared/config/*"],
+      "@guards/*": ["src/shared/guards/*"],
+      "@shared/*": ["src/shared/*"],
+      "@api/*": ["src/api/*"],
+      "@root/*": ["src/*"]
+    }
   }
 }

@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsMongoId, IsString } from 'class-validator';
 import { ContentType } from 'src/shared/enum/content-type.enum';
 
-export class MyListItemRequestDto {
+export class CreateMyListItemDto {
   @ApiProperty({
     description: 'Type of content (e.g., Movie, TV Show).',
     example: ContentType.MOVIE,

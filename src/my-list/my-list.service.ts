@@ -10,7 +10,7 @@ import { ContentType } from 'src/shared/enum/content-type.enum';
 import { MyListItemDocument } from './schema/my-list-item.schema';
 import { MyListItemDocumentPopulated } from './interface/my-list-item-document-populated.dto';
 import { Pagination } from 'src/shared/interface/pagination.interface';
-import { MyListItemRequestDto } from './dto/my-list-item-request.dto';
+import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
 import { MovieRepository } from 'src/movie/movie.repository';
 import { TVShowRepository } from 'src/tv-show/tv-show.repository';
 
@@ -24,7 +24,7 @@ export class MyListService {
 
   async addToList(
     userId: string,
-    body: MyListItemRequestDto,
+    body: CreateMyListItemDto,
   ): Promise<MyListItemDocument> {
     const userObjectId = new Types.ObjectId(userId);
 

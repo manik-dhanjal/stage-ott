@@ -1,6 +1,6 @@
 // src/tv-show/dto/tv-show.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsArray, IsEnum, IsDate } from 'class-validator';
 import { Genre } from 'src/shared/enum/genre.enum'; // Assuming Genre enum is already defined
 import { EpisodeDto } from './episode.dto';
 
@@ -40,4 +40,18 @@ export class TVShowDto {
   @IsArray()
   @IsOptional()
   episodes?: EpisodeDto[];
+
+  @ApiProperty({
+    description: 'The date when the TV show record was created.',
+    example: '2025-01-01T12:00:00.000Z',
+  })
+  @IsDate()
+  createdAt: Date;
+
+  @ApiProperty({
+    description: 'The date when the TV show record was last updated.',
+    example: '2025-01-15T12:00:00.000Z',
+  })
+  @IsDate()
+  updatedAt: Date;
 }

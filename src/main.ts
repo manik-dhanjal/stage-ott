@@ -7,7 +7,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();
-  app.setGlobalPrefix('api');
 
   // enable URI versioning onto endpoints
   app.enableVersioning({
@@ -24,7 +23,10 @@ async function bootstrap() {
       'API for managing content and user interactions on the Stage OTT platform',
     )
     .setVersion('1.0')
-    .addTag('stage')
+    .addSecurity('bearer', {
+      type: 'http',
+      scheme: 'bearer',
+    })
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('oas-docs', app, documentFactory);
