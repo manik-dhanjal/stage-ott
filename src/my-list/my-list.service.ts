@@ -34,7 +34,6 @@ export class MyListService {
     } else if (body.contentType == ContentType.TV_SHOW) {
       validContent = !!(await this.tvShowRepository.findById(body.contentId));
     }
-
     if (!validContent) {
       throw new BadRequestException(
         `Content with ID ${body.contentId} does not exist in the database`,

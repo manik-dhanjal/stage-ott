@@ -2,7 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { TVShow, TVShowDocument } from './schema/tv-show.schema';
 
 @Injectable()
@@ -22,11 +22,14 @@ export class TVShowRepository {
   }
 
   async findById(id: string): Promise<TVShowDocument | null> {
-    return this.tvShowModel.findOne({ id }).exec();
+    if (!Types.ObjectId.isValid(id)) {
+      return null;
+    }
+    return this.tvShowModel.findOne({ _id: id }).exec();
   }
 
   async deleteById(id: string): Promise<void> {
-    await this.tvShowModel.deleteOne({ id }).exec();
+    await this.tvShowModel.deleteOne({ _id: id }).exec();
   }
 
   async updateById(
@@ -34,7 +37,7 @@ export class TVShowRepository {
     update: Partial<TVShow>,
   ): Promise<TVShowDocument | null> {
     return this.tvShowModel
-      .findOneAndUpdate({ id }, update, { new: true })
+      .findOneAndUpdate({ _id: id }, update, { new: true })
       .exec();
   }
 }

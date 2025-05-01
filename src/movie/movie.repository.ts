@@ -21,7 +21,7 @@ export class MovieRepository {
   }
 
   async findById(id: string): Promise<Movie | null> {
-    if(!Types.ObjectId.isValid(id)) {
+    if (!Types.ObjectId.isValid(id)) {
       return null;
     }
     return this.movieModel.findOne({ _id: new Types.ObjectId(id) }).exec();
@@ -32,11 +32,11 @@ export class MovieRepository {
     update: Partial<Movie>,
   ): Promise<MovieDocument | null> {
     return this.movieModel
-      .findOneAndUpdate({ id }, update, { new: true })
+      .findOneAndUpdate({ _id: id }, update, { new: true })
       .exec();
   }
 
   async deleteById(id: string): Promise<void> {
-    await this.movieModel.deleteOne({ id }).exec();
+    await this.movieModel.deleteOne({ _id: id }).exec();
   }
 }
