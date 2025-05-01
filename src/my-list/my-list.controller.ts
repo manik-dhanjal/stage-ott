@@ -16,6 +16,8 @@ import { MyListItemResponseDto } from './dto/my-list-item-response.dto';
 import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { MyListItemPopulatedResponseDto } from './dto/my-list-item-populated-response.dto';
+import { PaginatedQueryDto } from '@shared/dto/paginated-query.dto';
+import { of } from 'rxjs';
 
 @ApiTags('My List')
 @ApiBearerAuth()
@@ -77,12 +79,14 @@ export class MyListController {
   })
   @ApiBearerAuth()
   async getMyList(
-    @Request() {user: { _id: userId } },
-    @Query('offset') offset = 1,
-    @Query('limit') limit = 10,
+    @Request() {user},
+    @Query() query: PaginatedQueryDto,
   ): Promise<PaginationDto<MyListItemPopulatedResponseDto>> {
+    const { offset, limit } = query;
+
+    console.log('User ID:', user,offset, limit);
     const paginationData = await this.myListService.getMyList(
-      userId,
+      user._id,
       offset,
       limit,
     );

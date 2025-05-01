@@ -15,7 +15,7 @@ class PaginationMetaDto {
 
   @ApiProperty({
     description: 'The total number of items fetched.',
-    example: 42,
+    example: 10,
   })
   @IsNumber()
   count: number;

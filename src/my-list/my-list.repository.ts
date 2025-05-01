@@ -31,17 +31,14 @@ export class MyListRepository {
 
   async findPaginatedByUser(
     userId: Types.ObjectId,
-    page = 1,
+    offset = 1,
     limit = 10,
   ): Promise<MyListItemDocumentPopulated[]> {
-    const skip = (page - 1) * limit;
-
     return this.myListModel
       .find({ user: userId })
-      .skip(skip)
+      .skip(offset)
       .limit(limit)
-      .populate('movie')
-      .populate('tvShow')
+      .populate(['movie', 'tvShow'])
       .lean<MyListItemDocumentPopulated[]>();
   }
 }

@@ -9,7 +9,7 @@ import { WatchHistoryDto } from './watch-history.dto';
 export class CreateUserDto {
   @ApiProperty({
     description: 'The unique username of the user.',
-    example: 'john_doe',
+    example: 'admin',
   })
   @IsString()
   username: string;
@@ -33,7 +33,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Hashed password of the user.',
-    example: '$2b$10$W9L...saf123sdf', // bcrypt hash example
+    example: 'admin123', // bcrypt hash example
   })
   @IsString()
   password: string;

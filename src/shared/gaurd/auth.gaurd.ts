@@ -46,6 +46,7 @@ export class AuthGuard implements CanActivate {
         userConfig.jwtSecret,
       ) as jwt.JwtPayload;
 
+      console.log('tokenPayload', tokenPayload);
       if (
         !tokenPayload?.userId ||
         tokenPayload.tokenType !== UserTokenType.ACCESS_TOKEN
@@ -53,6 +54,7 @@ export class AuthGuard implements CanActivate {
         throw new Error('Bearer token is not a valid access token');
       }
       const user = await this.userService.getUserById(tokenPayload.userId);
+      console.log('user', user);
       if (!user) {
         new Error('User doesnt exist for request token');
       }

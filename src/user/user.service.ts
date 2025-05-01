@@ -109,7 +109,7 @@ export class UserService {
   ): Promise<UserDocument | null> {
     return this.repository.findOne(
       {
-        _id: new Types.ObjectId( userId),
+        _id: new Types.ObjectId(userId),
       }
     );
   }

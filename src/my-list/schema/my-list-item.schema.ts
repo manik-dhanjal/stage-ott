@@ -37,5 +37,4 @@ export type MyListItemDocument = HydratedDocument<MyListItem>;
 export const MyListItemSchema = SchemaFactory.createForClass(MyListItem);
 
 // Add compound indexes to prevent duplicate entries
-MyListItemSchema.index({ user: 1, movie: 1 }, { unique: true, sparse: true });
-MyListItemSchema.index({ user: 1, tvShow: 1 }, { unique: true, sparse: true });
+MyListItemSchema.index({ user: 1}, { sparse: true });

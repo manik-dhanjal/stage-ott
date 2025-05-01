@@ -33,6 +33,7 @@ export class MyListItemPopulatedResponseDto extends OmitType(
     dto.id = document._id.toString();
     dto.contentType = document.contentType;
 
+    console.log('Document:', document);
     // Assign the populated content (either MovieDto or TVShowDto)
     if (document.contentType === ContentType.MOVIE && document.movie) {
       dto.content = document.movie as MovieDto;

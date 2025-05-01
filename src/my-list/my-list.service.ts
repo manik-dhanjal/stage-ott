@@ -81,7 +81,7 @@ export class MyListService {
 
   async getMyList(
     userId: string,
-    offset = 1,
+    offset = 0,
     limit = 10,
   ): Promise<Pagination<MyListItemDocumentPopulated>> {
     const userObjectId = new Types.ObjectId(userId);
