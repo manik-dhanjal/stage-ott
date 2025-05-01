@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsArray,
 } from 'class-validator';
+import { TVShowDocument } from '../schema/tv-show.schema';
 
 export class EpisodeDto {
   @ApiProperty({
@@ -45,4 +46,19 @@ export class EpisodeDto {
   @IsArray()
   @IsOptional()
   actors?: string[];
+
+    /**
+   * Converts an Episode document to an EpisodeDto instance.
+   * @param document The Episode document to convert.
+   * @returns An EpisodeDto instance.
+   */
+    static fromDocument(document: TVShowDocument['episodes'][0]): EpisodeDto {
+        const dto = new EpisodeDto();
+        dto.episodeNumber = document.episodeNumber;
+        dto.seasonNumber = document.seasonNumber;
+        dto.releaseDate = document.releaseDate;
+        dto.director = document.director;
+        dto.actors = document.actors;
+        return dto;
+    }
 }

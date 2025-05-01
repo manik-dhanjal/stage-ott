@@ -3,8 +3,16 @@
 import { IsString, IsOptional, IsDate, IsArray, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Genre } from 'src/shared/enum/genre.enum';
+import { MovieDocument } from '../schema/movies.schema';
 
 export class MovieDto {
+    @ApiProperty({
+        description: 'The unique identifier of the movie.',
+        example: '60d5ec49f1b2c8a3d4e8b456',
+    })
+    @IsString()
+    id: string;
+
   @ApiProperty({
     description: 'The title of the movie.',
     example: 'Inception',
@@ -68,4 +76,21 @@ export class MovieDto {
   })
   @IsDate()
   updatedAt: Date;
+
+    /**
+   * Converts a Movie document to a MovieDto instance.
+   * @param document The Movie document to convert.
+   * @returns A MovieDto instance.
+   */
+    static fromDocument(document: MovieDocument): MovieDto {
+        const dto = new MovieDto();
+        dto.id = document._id.toString();
+        dto.title = document.title;
+        dto.description = document.description;
+        dto.genres = document.genres;
+        dto.releaseDate = document.releaseDate;
+        dto.director = document.director;
+        dto.actors = document.actors;
+        return dto;
+    }
 }

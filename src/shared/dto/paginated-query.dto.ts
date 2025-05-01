@@ -5,7 +5,7 @@ import { IsOptional, IsInt, Min } from 'class-validator';
 export class PaginatedQueryDto {
   @ApiProperty({
     description: 'The number of items to skip before starting to collect the result set.',
-    example: 1,
+    example: 0,
     required: false,
   })
   @Transform(({ value }) => (value ? Number(value) : 0))

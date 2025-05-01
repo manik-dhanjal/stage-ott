@@ -3,8 +3,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, IsEnum, IsDate } from 'class-validator';
 import { Genre } from 'src/shared/enum/genre.enum'; // Assuming Genre enum is already defined
 import { EpisodeDto } from './episode.dto';
+import { TVShowDocument } from '../schema/tv-show.schema';
 
 export class TVShowDto {
+
+    @ApiProperty({
+        description: 'The unique identifier of the TV show.',
+        example: '1234567890abcdef12345678',
+    })
+    @IsString()
+    id: string;
+    
   @ApiProperty({
     description: 'The title of the TV show.',
     example: 'Breaking Bad',
@@ -54,4 +63,22 @@ export class TVShowDto {
   })
   @IsDate()
   updatedAt: Date;
+
+
+    /**
+   * Converts a TVShow document to a TVShowDto instance.
+   * @param document The TVShow document to convert.
+   * @returns A TVShowDto instance.
+   */
+    static fromDocument(document: TVShowDocument): TVShowDto {
+        const dto = new TVShowDto();
+        dto.id = document._id.toString();
+        dto.title = document.title;
+        dto.description = document.description;
+        dto.genres = document.genres;
+        dto.episodes = document.episodes?.map((episode) =>
+          EpisodeDto.fromDocument(episode),
+        );
+        return dto;
+    }
 }

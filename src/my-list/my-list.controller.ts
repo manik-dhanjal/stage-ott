@@ -87,8 +87,8 @@ export class MyListController {
     console.log('User ID:', user,offset, limit);
     const paginationData = await this.myListService.getMyList(
       user._id,
-      offset,
-      limit,
+      Number(offset),
+      Number(limit),
     );
     const itemsDto = paginationData.docs.map((item) =>
       MyListItemPopulatedResponseDto.fromDocument(item),
