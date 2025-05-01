@@ -15,6 +15,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@shared/gaurd/auth.gaurd';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
+import { REDIS_CONFIG_NAME, RedisConfig } from '@config/redis.config';
 
 @Module({
   imports: [
@@ -34,6 +37,22 @@ import { AuthGuard } from '@shared/gaurd/auth.gaurd';
     TVShowModule,
     MyListModule,
     UserModule,
+    CacheModule.register({
+      isGlobal: true,
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const redisConfig = configService.get<RedisConfig>(REDIS_CONFIG_NAME);
+        const store = await redisStore({
+          socket: {
+           ...redisConfig
+          },
+        });
+        return {
+          store: () => store,
+        };
+      },
+      inject: [ConfigService],
+    })
   ],
   controllers: [AppController],
   providers: [AppService,

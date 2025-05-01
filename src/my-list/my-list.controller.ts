@@ -8,20 +8,21 @@ import {
   Query,
   UseGuards,
   Request,
+  UseInterceptors,
 } from '@nestjs/common';
 import { MyListService } from './my-list.service';
-import { ContentType } from 'src/shared/enum/content-type.enum';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { MyListItemResponseDto } from './dto/my-list-item-response.dto';
 import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { MyListItemPopulatedResponseDto } from './dto/my-list-item-populated-response.dto';
 import { PaginatedQueryDto } from '@shared/dto/paginated-query.dto';
-import { of } from 'rxjs';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @ApiTags('My List')
 @ApiBearerAuth()
 @Controller({path:'my-list',    version: '1'})
+@UseInterceptors(CacheInterceptor)
 export class MyListController {
   constructor(private readonly myListService: MyListService) {}
 
