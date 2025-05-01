@@ -14,10 +14,10 @@ import { userConfig } from './shared/config/user.config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from '@shared/gaurd/auth.gaurd';
+import { AuthGuard } from './shared/gaurd/auth.gaurd';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
-import { REDIS_CONFIG_NAME, RedisConfig } from '@config/redis.config';
+import { REDIS_CONFIG_NAME, RedisConfig } from './shared/config/redis.config';
 
 @Module({
   imports: [

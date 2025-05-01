@@ -2,7 +2,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument } from 'mongoose';
 import { Episode } from './episode.schema';
-import { Genre } from 'src/shared/enum/genre.enum';
+import { Genre } from '../../shared/enum/genre.enum';
 
 export type TVShowDocument = HydratedDocument<TVShow>;
 

@@ -6,13 +6,14 @@ import {
 } from '@nestjs/common';
 import { MyListRepository } from './my-list.repository';
 import { Types } from 'mongoose';
-import { ContentType } from 'src/shared/enum/content-type.enum';
+import { ContentType } from '../shared/enum/content-type.enum';
 import { MyListItemDocument } from './schema/my-list-item.schema';
 import { MyListItemDocumentPopulated } from './interface/my-list-item-document-populated.dto';
-import { Pagination } from 'src/shared/interface/pagination.interface';
+import { Pagination } from '../shared/interface/pagination.interface';
 import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
-import { MovieRepository } from 'src/movie/movie.repository';
-import { TVShowRepository } from 'src/tv-show/tv-show.repository';
+import { MovieRepository } from '../movie/movie.repository';
+import { TVShowRepository } from '../tv-show/tv-show.repository';
+import { v } from '@faker-js/faker/dist/airline-BUL6NtOJ';
 
 @Injectable()
 export class MyListService {
@@ -23,14 +24,12 @@ export class MyListService {
   ) {}
 
   async addToList(
-    userId: string,
+    userId: Types.ObjectId,
     body: CreateMyListItemDto,
   ): Promise<MyListItemDocument> {
-    const userObjectId = new Types.ObjectId(userId);
-
     let validContent = false;
 
-    if (body.contentType == ContentType.MOVIE) {
+    if (body.contentType === ContentType.MOVIE) {
       validContent = !!(await this.movieRepository.findById(body.contentId));
     } else if (body.contentType == ContentType.TV_SHOW) {
       validContent = !!(await this.tvShowRepository.findById(body.contentId));
@@ -44,7 +43,7 @@ export class MyListService {
 
     // Check if item already exists
     const existing = await this.myListRepository.findOne({
-      user: userObjectId,
+      user: userId,
       [body.contentType === ContentType.MOVIE ? 'movie' : 'tvShow']:
         new Types.ObjectId(body.contentId),
     });
@@ -54,7 +53,7 @@ export class MyListService {
     }
 
     return this.myListRepository.create({
-      user: userObjectId,
+      user: userId,
       [body.contentType === ContentType.MOVIE ? 'movie' : 'tvShow']:
         new Types.ObjectId(body.contentId),
       contentType: body.contentType,

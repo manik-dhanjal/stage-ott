@@ -1,5 +1,4 @@
-
-import { USER_CONFIG_NAME, UserConfig } from '@config/user.config';
+import { USER_CONFIG_NAME, UserConfig } from '../config/user.config';
 import {
   CanActivate,
   ExecutionContext,
@@ -8,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { UserTokenType } from '@root/user/enum/user-token-type.enum';
-import { UserService } from '@root/user/user.service';
-import { IS_PUBLIC_KEY } from '@shared/decorator/no-auth.decorator';
+import { UserTokenType } from '../../user/enum/user-token-type.enum';
+import { UserService } from '../../user/user.service';
+import { IS_PUBLIC_KEY } from '../../shared/decorator/no-auth.decorator';
 
 import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
@@ -30,23 +29,23 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    console.log('isPublic', isPublic);
-    console.log('token', token);
-    console.log('request', request.headers.authorization);
     if (isPublic) {
       return true;
     }
+
     if (!token) {
       throw new UnauthorizedException('Bearer access token is missing.');
     }
     try {
       const userConfig = this.configService.get<UserConfig>(USER_CONFIG_NAME);
+      if (!userConfig) {
+        throw new Error('User config is not defined');
+      }
       const tokenPayload = jwt.verify(
         token,
         userConfig.jwtSecret,
       ) as jwt.JwtPayload;
 
-      console.log('tokenPayload', tokenPayload);
       if (
         !tokenPayload?.userId ||
         tokenPayload.tokenType !== UserTokenType.ACCESS_TOKEN
@@ -54,7 +53,6 @@ export class AuthGuard implements CanActivate {
         throw new Error('Bearer token is not a valid access token');
       }
       const user = await this.userService.getUserById(tokenPayload.userId);
-      console.log('user', user);
       if (!user) {
         new Error('User doesnt exist for request token');
       }

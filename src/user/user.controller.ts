@@ -13,9 +13,7 @@ import {
   import { UserTokenDto, UserTokensDto } from './dto/user-token.dto';
   import { UpdateUserDto } from './dto/update-user.dto';
   import { UserResponseDto } from './dto/user-response.dto';
-import { AuthGuard } from '@shared/gaurd/auth.gaurd';
-import { NoAuth } from '@shared/decorator/no-auth.decorator';
-  import { PickType } from '@nestjs/swagger';
+import { NoAuth } from '../shared/decorator/no-auth.decorator';
 import { LoginDto } from './dto/login.dto';
 
   @ApiTags('User')

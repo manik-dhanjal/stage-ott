@@ -1,4 +1,4 @@
-import { USER_CONFIG_NAME, UserConfig } from 'src/shared/config/user.config';
+import { USER_CONFIG_NAME, UserConfig } from '../shared/config/user.config';
 import { UserRepository } from './user.repository';
 import { ConfigService } from '@nestjs/config';
 import { UserTokenDto, UserTokensDto } from './dto/user-token.dto';
@@ -19,7 +19,6 @@ export class UserService {
     private readonly configService: ConfigService,
     private readonly repository: UserRepository,
   ) {
-    console.log(this.configService)
     this.userConfig = this.configService.get<UserConfig>(
       USER_CONFIG_NAME,
     ) as UserConfig;
@@ -101,7 +100,7 @@ export class UserService {
         'refresh token is not valid for requested user.',
       );
     }
-    return this.generateAccessToken(user);
+    return this.generateAccessToken(user as UserDocument);
   }
 
   async getUserById(
@@ -125,13 +124,18 @@ export class UserService {
     await this.repository.findOne({
       _id: mongoUserId,
     });
-    return this.repository.updateByUserId(mongoUserId, userToUpdate);
+    const updatedUser = await this.repository.updateByUserId(mongoUserId, userToUpdate);
+
+    if (!updatedUser) {
+      throw new UnauthorizedException('User not found');
+    }
+    return updatedUser;
   }
 
   async updateUserWithQuery(
     id: Types.ObjectId,
     updateQuery: UpdateQuery<UserDocument>,
-  ): Promise<UserDocument> {
+  ): Promise<UserDocument|null> {
     return this.repository.updateByUserId(id, updateQuery);
   }
 

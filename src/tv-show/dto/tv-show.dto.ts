@@ -1,7 +1,7 @@
 // src/tv-show/dto/tv-show.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, IsEnum, IsDate } from 'class-validator';
-import { Genre } from 'src/shared/enum/genre.enum'; // Assuming Genre enum is already defined
+import { Genre } from '../../shared/enum/genre.enum'; // Assuming Genre enum is already defined
 import { EpisodeDto } from './episode.dto';
 import { TVShowDocument } from '../schema/tv-show.schema';
 
@@ -13,7 +13,7 @@ export class TVShowDto {
     })
     @IsString()
     id: string;
-    
+
   @ApiProperty({
     description: 'The title of the TV show.',
     example: 'Breaking Bad',

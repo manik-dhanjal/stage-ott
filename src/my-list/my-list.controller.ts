@@ -11,17 +11,23 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { MyListService } from './my-list.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { MyListItemResponseDto } from './dto/my-list-item-response.dto';
 import { CreateMyListItemDto } from './dto/create-my-list-item.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../shared/dto/pagination.dto';
 import { MyListItemPopulatedResponseDto } from './dto/my-list-item-populated-response.dto';
-import { PaginatedQueryDto } from '@shared/dto/paginated-query.dto';
+import { PaginatedQueryDto } from '../shared/dto/paginated-query.dto';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @ApiTags('My List')
 @ApiBearerAuth()
-@Controller({path:'my-list',    version: '1'})
+@Controller({ path: 'my-list', version: '1' })
 @UseInterceptors(CacheInterceptor)
 export class MyListController {
   constructor(private readonly myListService: MyListService) {}
@@ -39,7 +45,7 @@ export class MyListController {
   @ApiBearerAuth()
   async addToList(
     @Body() body: CreateMyListItemDto,
-    @Request() {user: { _id: userId } },
+    @Request() { user: { _id: userId } },
   ): Promise<MyListItemResponseDto> {
     const item = await this.myListService.addToList(userId, body);
     return MyListItemResponseDto.fromDocument(item);
@@ -62,7 +68,7 @@ export class MyListController {
   })
   async removeFromList(
     @Param('itemId') itemId: string,
-    @Request() {user: { _id: userId } } 
+    @Request() { user: { _id: userId } },
   ): Promise<void> {
     await this.myListService.removeFromList(userId, itemId);
   }
@@ -80,12 +86,11 @@ export class MyListController {
   })
   @ApiBearerAuth()
   async getMyList(
-    @Request() {user},
+    @Request() { user },
     @Query() query: PaginatedQueryDto,
   ): Promise<PaginationDto<MyListItemPopulatedResponseDto>> {
     const { offset, limit } = query;
 
-    console.log('User ID:', user,offset, limit);
     const paginationData = await this.myListService.getMyList(
       user._id,
       Number(offset),

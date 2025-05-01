@@ -2,8 +2,8 @@
 
 import { IsString, IsOptional, IsDate, IsArray, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Genre } from 'src/shared/enum/genre.enum';
-import { MovieDocument } from '../schema/movies.schema';
+import { Genre } from '../../shared/enum/genre.enum';
+import { MovieDocument } from '../schema/movie.schema';
 
 export class MovieDto {
     @ApiProperty({

@@ -1,5 +1,5 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { Genre } from 'src/shared/enum/genre.enum';
+import { Genre } from '../../shared/enum/genre.enum';
 
 @Schema({ _id: false })
 export class Preferences {

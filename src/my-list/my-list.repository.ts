@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { MyListItem, MyListItemDocument } from './schema/my-list-item.schema';
-import { ContentType } from 'src/shared/enum/content-type.enum';
 import { MyListItemDocumentPopulated } from './interface/my-list-item-document-populated.dto';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class MyListRepository {
   ) {}
 
   async create(body: MyListItem): Promise<MyListItemDocument> {
-    return this.myListModel.create(body);
+    return this.myListModel.insertOne(body);
   }
 
   async delete(

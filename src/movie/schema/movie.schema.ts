@@ -1,7 +1,7 @@
 // src/movies/schemas/movie.schema.ts
 
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Genre } from 'src/shared/enum/genre.enum';
+import { Genre } from '../../shared/enum/genre.enum';
 import { HydratedDocument } from 'mongoose';
 
 export type MovieDocument = HydratedDocument<Movie>;

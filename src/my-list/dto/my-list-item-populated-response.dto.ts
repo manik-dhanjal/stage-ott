@@ -1,12 +1,12 @@
-import { IsString, IsOptional, IsObject, IsEnum } from 'class-validator';
+import { IsObject } from 'class-validator';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { MovieDto } from 'src/movie/dto/movie.dto';
-import { TVShowDto } from 'src/tv-show/dto/tv-show.dto';
-import { ContentType } from 'src/shared/enum/content-type.enum';
+import { MovieDto } from '../../movie/dto/movie.dto';
+import { TVShowDto } from '../../tv-show/dto/tv-show.dto';
+import { ContentType } from '../../shared/enum/content-type.enum';
 import { MyListItemDocumentPopulated } from '../interface/my-list-item-document-populated.dto';
 import { MyListItemResponseDto } from './my-list-item-response.dto';
-import { MovieDocument } from '@root/movie/schema/movies.schema';
-import { TVShowDocument } from '@root/tv-show/schema/tv-show.schema';
+import { MovieDocument } from '../../movie/schema/movie.schema';
+import { TVShowDocument } from '../../tv-show/schema/tv-show.schema';
 
 export class MyListItemPopulatedResponseDto extends OmitType(
   MyListItemResponseDto,

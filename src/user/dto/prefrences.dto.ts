@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsEnum } from 'class-validator';
-import { Genre } from 'src/shared/enum/genre.enum';
+import { Genre } from '../../shared/enum/genre.enum';
 
 export class PreferencesDto {
   @ApiProperty({

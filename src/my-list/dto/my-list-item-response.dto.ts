@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsEnum, IsMongoId, IsOptional, IsString } from 'class-validator';
-import { ContentType } from 'src/shared/enum/content-type.enum';
+import { IsDate, IsString } from 'class-validator';
 import { MyListItemDocument } from '../schema/my-list-item.schema';
 import { CreateMyListItemDto } from './create-my-list-item.dto';
 

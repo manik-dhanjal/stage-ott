@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Movie } from './schema/movies.schema';
-import { Model } from 'mongoose';
-import { MovieDocument } from './schema/movies.schema';
+import { Movie } from './schema/movie.schema';
+import { Model, Types } from 'mongoose';
+import { MovieDocument } from './schema/movie.schema';
 
 @Injectable()
 export class MovieRepository {
@@ -21,7 +21,10 @@ export class MovieRepository {
   }
 
   async findById(id: string): Promise<Movie | null> {
-    return this.movieModel.findOne({ id }).exec();
+    if(!Types.ObjectId.isValid(id)) {
+      return null;
+    }
+    return this.movieModel.findOne({ _id: new Types.ObjectId(id) }).exec();
   }
 
   async updateById(

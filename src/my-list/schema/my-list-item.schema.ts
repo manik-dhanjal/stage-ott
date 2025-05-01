@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
-import { Movie } from 'src/movie/schema/movies.schema';
-import { ContentType } from 'src/shared/enum/content-type.enum';
-import { TVShow } from 'src/tv-show/schema/tv-show.schema';
-import { User } from 'src/user/schema/user.schema';
+import { Movie } from '../../movie/schema/movie.schema';
+import { ContentType } from '../../shared/enum/content-type.enum';
+import { TVShow } from '../../tv-show/schema/tv-show.schema';
+import { User } from '../../user/schema/user.schema';
 
-@Schema({ _id: false, timestamps: true })
+@Schema({ timestamps: true })
 export class MyListItem {
   @Prop({
     required: true,
@@ -37,4 +37,4 @@ export type MyListItemDocument = HydratedDocument<MyListItem>;
 export const MyListItemSchema = SchemaFactory.createForClass(MyListItem);
 
 // Add compound indexes to prevent duplicate entries
-MyListItemSchema.index({ user: 1}, { sparse: true });
+MyListItemSchema.index({ user: 1 }, { sparse: true });
