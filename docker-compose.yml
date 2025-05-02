@@ -1,0 +1,36 @@
+version: '3.8'
+networks:
+  stage-network:
+
+services:
+  stage-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        STAGE: dev
+    image: 'stage-server:latest'
+    restart: always
+    depends_on:
+      - redis
+    ports:
+      - '80:3005'
+    networks:
+      - stage-network
+    env_file:
+      - .env
+
+  redis:
+    container_name: stage_redis
+    image: redis
+    restart: always
+    volumes:
+      - redis:/data
+    expose:
+      - 6379
+    networks:
+      - stage-network
+
+volumes:
+  redis:
+    driver: local
