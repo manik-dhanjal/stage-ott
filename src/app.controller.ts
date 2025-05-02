@@ -9,7 +9,7 @@ import { NoAuth } from './shared/decorator/no-auth.decorator';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('health')
+  @Get()
   getHello(): string {
     // This is a health check endpoint
     return this.appService.getHello();
