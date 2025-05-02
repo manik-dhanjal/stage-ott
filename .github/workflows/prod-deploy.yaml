@@ -57,7 +57,7 @@ jobs:
           environment_name: Stage-ott-env
           version_label: ${{ github.sha }}
           region: eu-north-1
-          deployment_package: stage-ott.zip
+          deployment_package: deploy.zip
 
       - name: Deployed!
         run: echo App deployed to ELB
