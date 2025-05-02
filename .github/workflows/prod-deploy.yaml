@@ -3,24 +3,61 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+    env:
+      NODE_ENV: 'development'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@master
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup node env
+        uses: actions/setup-node@v2.1.2
         with:
-          node-version: '22'
+          node-version: ${{ matrix.node }}
 
-      - name: Install dependencies
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Installing NPM
         run: npm install
 
-      - name: Generate Deployment package
-        run: zip -r stage-ott.zip .
+      - name: Linting check
+        run: npm run lint
+
+      - name: Building application
+        run: npm run build
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip * .[^.]* -x "**node_modules**"
+
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          pattern: '[:\.]+'
+          string: '${{ steps.current-time.outputs.time }}'
+          replace-with: '-'
+          flags: 'g'
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
@@ -32,3 +69,6 @@ jobs:
           version_label: ${{ github.sha }}
           region: eu-north-1
           deployment_package: stage-ott.zip
+
+      - name: Deployed!
+        run: echo App deployed to ELB
