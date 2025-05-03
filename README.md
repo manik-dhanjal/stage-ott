@@ -110,7 +110,7 @@ The application requires the following environment variables to be set:
 - Uses Jest with Testcontainers to spin up real MongoDB and Redis containers for end-to-end testing.
 - Ensures the application behaves as expected in a production-like environment.
 
----
+## ![Integration Test](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/integration-test.png)
 
 ## Performance
 

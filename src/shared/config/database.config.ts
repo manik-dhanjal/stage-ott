@@ -19,7 +19,6 @@ export const databaseConfig = registerAs(DATABASE_CONFIG_NAME, () => {
     process.env.MONGO_LOGGER_LEVEL,
   ).value;
 
-  console.log('MongoDB URL:', dbUrl);
   return {
     uri: dbUrl,
     useNewUrlParser: true,

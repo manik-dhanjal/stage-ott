@@ -156,7 +156,6 @@ describe('MyListController (e2e)', () => {
         .set('Authorization', `Bearer ${accessToken}`)
         .send(createDto);
 
-      console.log('response.body', response.body);
       expect(response.body).toMatchObject(createDto);
       expect(response.status).toBe(201);
       // Check if the item was added to the database
@@ -342,7 +341,6 @@ describe('MyListController (e2e)', () => {
     // Test for removing an item from My List
     it('should remove an item from My List', async () => {
       const mockMovieToInsert = createMockMovie();
-      console.log('mockMovieToInsert', mockMovieToInsert);
       const insertedMovieDoc = await movieModel.insertOne(mockMovieToInsert);
 
       const insertedListItemDoc = await mylistModel.insertOne({
