@@ -41,23 +41,24 @@ import {
     TVShowModule,
     MyListModule,
     UserModule,
-    CacheModule.registerAsync({
+    CacheModule.register({
       isGlobal: true,
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
-        console.log('Creating Redis store');
-        const redisConfig = configService.get<RedisConfig>(
-          REDIS_CONFIG_NAME,
-        ) as RedisConfig;
-        const store = await redisStore({
-          url: `redis://${redisConfig.host}:${redisConfig.port}`,
-          ttl: redisConfig.ttl,
-        });
-        return {
-          store: () => store,
-        };
-      },
-      inject: [ConfigService],
+      ttl: 60000,
+      max: 100,
+      // imports: [ConfigModule],
+      // useFactory: async (configService: ConfigService) => {
+      //   const redisConfig = configService.get<RedisConfig>(
+      //     REDIS_CONFIG_NAME,
+      //   ) as RedisConfig;
+      //   const store = await redisStore({
+      //     url: `redis://${redisConfig.host}:${redisConfig.port}`,
+      //     ttl: redisConfig.ttl,
+      //   });
+      //   return {
+      //     store: () => store,
+      //   };
+      // },
+      // inject: [ConfigService],
     }),
   ],
   controllers: [AppController],
