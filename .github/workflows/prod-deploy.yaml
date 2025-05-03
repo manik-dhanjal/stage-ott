@@ -11,6 +11,12 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the application
+        run: npm run build # Ensure your app has a build script if needed
+
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
