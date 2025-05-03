@@ -95,10 +95,14 @@ The application requires the following environment variables to be set:
 - Add, remove, and fetch movies/TV shows from a user's personalized list.
 - Optimized with database indexing and Redis caching for high performance.
 
+![My List Module](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/my-list-endpoints.png)
+
 ### 2. **User Module**
 
 - Implements OAuth 2.0 for secure authentication.
 - Supports JWT-based access and refresh tokens.
+
+![User Module](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/user-endpoints.png)
 
 ### 3. **OpenAPI Documentation**
 
