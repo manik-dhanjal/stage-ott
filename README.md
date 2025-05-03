@@ -187,7 +187,7 @@ The `/api/v1/my-list` endpoint was subjected to load testing using Postman. Belo
 - **P99**: 14 ms
 - **Error Rate**: 0.00%
 
-![Local Server Stress Test](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/deployed-stress-test-report.png)
+![Local Server Stress Test](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/local-stress-test-report.png)
 
 ---
 
