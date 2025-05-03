@@ -24,7 +24,7 @@
 
 This repository is a Node.js application built with NestJS, a very powerful framework for building scalable and efficient server-side applications. It utilizes various technologies to ensure performance, reliability, and ease of deployment.
 
-![https://github.com/manik-dhanjal/assets/docs.png](https://github.com/manik-dhanjal/assets/docs.png)
+![https://github.com/manik-dhanjal/stage-ott/blob/master/assets/docs.png](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/docs.png)
 
 ---
 
@@ -175,7 +175,7 @@ The `/api/v1/my-list` endpoint was subjected to load testing using Postman. Belo
 - **P99**: 356 ms
 - **Error Rate**: 0.00%
 
-![Deployed Server Stress Test](https://github.com/manik-dhanjal/assets/deployed-stress-test-report.png)
+![Deployed Server Stress Test](https://github.com/manik-dhanjal/stage-ott/blob/master/assets/deployed-stress-test-report.png)
 
 #### **Local Server**:
 
@@ -187,7 +187,7 @@ The `/api/v1/my-list` endpoint was subjected to load testing using Postman. Belo
 - **P99**: 14 ms
 - **Error Rate**: 0.00%
 
-![Local Server Stress Test](https://github.com/manik-dhanjal/Stage-Backend/assets/deployed-stress-test-report.png)
+![Local Server Stress Test](https://github.com/manik-dhanjal/stage-ott/blob/master/Stage-Backend/assets/deployed-stress-test-report.png)
 
 ---
 
