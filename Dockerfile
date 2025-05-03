@@ -1,39 +1,21 @@
-
-# Base stage to install node deps
-
+# Base stage to install dependencies
 FROM --platform=linux/amd64 node:20-alpine AS base
 WORKDIR /app
 
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-RUN npm ci
+# Install dependencies
+RUN npm install
 
-# Build stage to transpile `src` into `dist`
-
-FROM base AS build
-
-COPY --from=base package*.json ./
-COPY --from=base /app/node_modules ./node_modules
+# Copy the entire application code to the container
 COPY . .
 
-RUN npm run build \
-    && npm prune --production
+# Copy local.env to .env in the container
+COPY local.env .env
 
-# Final stage for production app image
+# Expose the application port
+EXPOSE 3000
 
-FROM base AS production
-
-ENV NODE_ENV="production"
-ENV PORT=3000
-
-COPY --from=build --chown=node:node package*.json ./
-COPY --from=build --chown=node:node /app/node_modules ./node_modules
-COPY --from=build --chown=node:node /app/dist ./dist
-
-# Remove if you don't have public files
-COPY --from=build --chown=node:node /app/public ./public
-RUN mkdir -p /app/shared/public
-
-EXPOSE $PORT
-
-CMD ["node", "dist/main.js"]
+# Set the default command to start the application in development mode
+CMD ["npm", "run", "start:dev"]

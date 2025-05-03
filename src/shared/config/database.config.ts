@@ -18,6 +18,8 @@ export const databaseConfig = registerAs(DATABASE_CONFIG_NAME, () => {
   const mongoLoggerLevel = mongoLoggerLevelValidation.validate(
     process.env.MONGO_LOGGER_LEVEL,
   ).value;
+
+  console.log('MongoDB URL:', dbUrl);
   return {
     uri: dbUrl,
     useNewUrlParser: true,

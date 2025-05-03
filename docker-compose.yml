@@ -1,4 +1,3 @@
-version: '3.8'
 networks:
   stage-network:
 
@@ -13,12 +12,11 @@ services:
     restart: always
     depends_on:
       - redis
+      - mongo
     ports:
-      - '80:3005'
+      - '3000:3000'
     networks:
       - stage-network
-    env_file:
-      - .env
 
   redis:
     container_name: stage_redis
@@ -28,6 +26,15 @@ services:
       - redis:/data
     expose:
       - 6379
+    networks:
+      - stage-network
+
+  mongo:
+    image: mongo:latest
+    container_name: stage_mongo
+    restart: always
+    ports:
+      - '27017:27017'
     networks:
       - stage-network
 
