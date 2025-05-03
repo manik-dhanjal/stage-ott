@@ -14,7 +14,13 @@ async function bootstrap() {
   });
 
   // Initate validation pipeline for DTOs
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // Automatically transform query parameters to DTOs
+      whitelist: true, // Strip unknown properties
+      forbidNonWhitelisted: true, // Throw an error for unknown properties
+    }),
+  );
 
   // Initiate swagger for API documentation
   const config = new DocumentBuilder()

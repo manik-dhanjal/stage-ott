@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import inquirer from 'inquirer';
-import { MovieSchema } from '../dist/movie/schema/movies.schema.js';
+import { MovieSchema } from '../dist/movie/schema/movie.schema.js';
 import { MyListItemSchema } from '../dist/my-list/schema/my-list-item.schema.js';
 import { TVShowSchema } from '../dist/tv-show/schema/tv-show.schema.js';
 import { UserSchema } from '../dist/user/schema/user.schema.js';
@@ -56,7 +56,15 @@ async function populateDatabase() {
   console.log('Cleared existing data');
 
   // Define genres
-  const genres = ['Action', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Romance', 'SciFi'];
+  const genres = [
+    'Action',
+    'Comedy',
+    'Drama',
+    'Fantasy',
+    'Horror',
+    'Romance',
+    'SciFi',
+  ];
 
   // Create a new user with preferences and watch history
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -96,19 +104,21 @@ async function populateDatabase() {
     title: faker.lorem.words(3),
     description: faker.lorem.paragraph(),
     genres: faker.helpers.arrayElements(genres, 2),
-    episodes: Array.from({ length: faker.number.int({ min: 5, max: 20 }) }).map(() => ({
-      title: faker.lorem.words(2),
-      description: faker.lorem.sentence(),
-      duration: faker.number.int({ min: 20, max: 60 }), // Duration in minutes
-      director: faker.person.fullName(),
-      actors: faker.helpers.arrayElements(
-        Array.from({ length: 10 }).map(() => faker.person.fullName()),
-        3,
-      ),
-      releaseDate: faker.date.past(),
-      seasonNumber: faker.number.int({ min: 1, max: 5 }),
-      episodeNumber: faker.number.int({ min: 1, max: 20 }),
-    })),
+    episodes: Array.from({ length: faker.number.int({ min: 5, max: 20 }) }).map(
+      () => ({
+        title: faker.lorem.words(2),
+        description: faker.lorem.sentence(),
+        duration: faker.number.int({ min: 20, max: 60 }), // Duration in minutes
+        director: faker.person.fullName(),
+        actors: faker.helpers.arrayElements(
+          Array.from({ length: 10 }).map(() => faker.person.fullName()),
+          3,
+        ),
+        releaseDate: faker.date.past(),
+        seasonNumber: faker.number.int({ min: 1, max: 5 }),
+        episodeNumber: faker.number.int({ min: 1, max: 20 }),
+      }),
+    ),
   }));
   const tvShowDocs = await TVShow.insertMany(tvShows);
   console.log('Inserted dummy TV shows');

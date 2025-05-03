@@ -2,6 +2,7 @@ import { USER_CONFIG_NAME, UserConfig } from '../config/user.config';
 import {
   CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -13,12 +14,16 @@ import { IS_PUBLIC_KEY } from '../../shared/decorator/no-auth.decorator';
 
 import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
     private reflector: Reflector,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache, // Inject CacheManager
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -52,10 +57,28 @@ export class AuthGuard implements CanActivate {
       ) {
         throw new Error('Bearer token is not a valid access token');
       }
+
+      // Check if the user is cached
+      const cachedUser = await this.cacheManager.get(
+        `user:${tokenPayload.userId}`,
+      );
+      if (cachedUser) {
+        request['user'] = cachedUser;
+        return true;
+      }
+
       const user = await this.userService.getUserById(tokenPayload.userId);
       if (!user) {
         new Error('User doesnt exist for request token');
       }
+
+      // Cache the user data
+      await this.cacheManager.set(
+        `user:${tokenPayload.userId}`,
+        user,
+        userConfig.accessJwtExpiresIn,
+      ); // Cache for 5 minutes
+
       request['user'] = user;
     } catch (error) {
       throw new UnauthorizedException(error.message);

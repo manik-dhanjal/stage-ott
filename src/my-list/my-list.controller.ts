@@ -26,9 +26,9 @@ import { PaginatedQueryDto } from '../shared/dto/paginated-query.dto';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @ApiTags('My List')
+@UseInterceptors(CacheInterceptor)
 @ApiBearerAuth()
 @Controller({ path: 'my-list', version: '1' })
-@UseInterceptors(CacheInterceptor)
 export class MyListController {
   constructor(private readonly myListService: MyListService) {}
 
@@ -93,8 +93,8 @@ export class MyListController {
 
     const paginationData = await this.myListService.getMyList(
       user._id,
-      Number(offset),
-      Number(limit),
+      offset,
+      limit,
     );
     const itemsDto = paginationData.docs.map((item) =>
       MyListItemPopulatedResponseDto.fromDocument(item),
