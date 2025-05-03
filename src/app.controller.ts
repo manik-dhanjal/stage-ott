@@ -11,7 +11,13 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    // This is a health check endpoint
+    // This is a health check
     return this.appService.getHello();
+  }
+
+  @Get('health')
+  health(): string {
+    // This is a health check
+    return 'OK';
   }
 }
