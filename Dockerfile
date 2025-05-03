@@ -1,26 +1,39 @@
-# Base image
-FROM node:20
 
-# Create app directory
-WORKDIR /usr/src/app
+# Base stage to install node deps
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+FROM --platform=linux/amd64 node:20-alpine AS base
+WORKDIR /app
+
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm install
+RUN npm ci
 
-# Bundle app source
+# Build stage to transpile `src` into `dist`
+
+FROM base AS build
+
+COPY --from=base package*.json ./
+COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
-# Copy the .env and .env.development files
-# COPY .env .env.development ./
+RUN npm run build \
+    && npm prune --production
 
-# Creates a "dist" folder with the production build
-RUN npm run build
+# Final stage for production app image
 
-# Expose the port on which the app will run
-EXPOSE 3005
+FROM base AS production
 
-# Start the server using the production build
-CMD ["npm", "run", "start:prod"]
+ENV NODE_ENV="production"
+ENV PORT=3000
+
+COPY --from=build --chown=node:node package*.json ./
+COPY --from=build --chown=node:node /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/dist ./dist
+
+# Remove if you don't have public files
+COPY --from=build --chown=node:node /app/public ./public
+RUN mkdir -p /app/shared/public
+
+EXPOSE $PORT
+
+CMD ["node", "dist/main.js"]

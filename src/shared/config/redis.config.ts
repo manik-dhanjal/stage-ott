@@ -18,9 +18,7 @@ export const redisConfig = registerAs(REDIS_CONFIG_NAME, (): RedisConfig => {
     .default(6379)
     .validate(process.env.REDIS_PORT).value;
 
-  const ttl = Joi.number()
-    .default(60)
-    .validate(process.env.REDIS_TTL).value;
+  const ttl = Joi.number().default(60).validate(process.env.REDIS_TTL).value;
 
   return {
     host,

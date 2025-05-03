@@ -17,13 +17,17 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './shared/gaurd/auth.gaurd';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
-import { REDIS_CONFIG_NAME, RedisConfig } from './shared/config/redis.config';
+import {
+  REDIS_CONFIG_NAME,
+  redisConfig,
+  RedisConfig,
+} from './shared/config/redis.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, userConfig],
+      load: [databaseConfig, userConfig, redisConfig],
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,29 +41,32 @@ import { REDIS_CONFIG_NAME, RedisConfig } from './shared/config/redis.config';
     TVShowModule,
     MyListModule,
     UserModule,
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const redisConfig = configService.get<RedisConfig>(REDIS_CONFIG_NAME);
+        console.log('Creating Redis store');
+        const redisConfig = configService.get<RedisConfig>(
+          REDIS_CONFIG_NAME,
+        ) as RedisConfig;
         const store = await redisStore({
-          socket: {
-           ...redisConfig
-          },
+          url: `redis://${redisConfig.host}:${redisConfig.port}`,
+          ttl: redisConfig.ttl,
         });
         return {
           store: () => store,
         };
       },
       inject: [ConfigService],
-    })
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-    }
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
 })
 export class AppModule {}
