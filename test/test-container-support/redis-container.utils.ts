@@ -1,6 +1,7 @@
 import { RedisStore, redisStore } from 'cache-manager-redis-store';
 import { GenericContainer, StartedTestContainer } from 'testcontainers';
 
+// This class is used to create a Redis container for testing purposes.
 export class RedisContainer {
   private container: StartedTestContainer;
   private store: RedisStore;
